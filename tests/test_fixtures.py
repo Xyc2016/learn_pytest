@@ -25,7 +25,6 @@ def fruit_basket(my_fruit):
 
 
 def test_my_fruit_in_basket(my_fruit, fruit_basket):
-
     assert my_fruit in fruit_basket
 
 
@@ -51,22 +50,20 @@ def test_string_only(append_fixture, order, first_entry):
 
 
 def test_conf(fixture_scope_module):
-    print(fixture_scope_module)
+    # print(fixture_scope_module)
+    pass
 
 
-@pytest.fixture
-def f_yield():
-    d = {}
+@pytest.fixture(params=[{"a": 1}, {"b": 1}, {"c": "c1"}])
+def f_yield(request):
+    print(f"{request.param}")
+    d = {**request.param, "k": "v"}
     yield d
-    print(d)
     print("finalizing d")
 
 
 def test_yield(f_yield):
-    f_yield["a"] = 1
-
-
-
+    print(f_yield)
 
 
 @pytest.mark.usefixtures("cleandir")
@@ -77,14 +74,4 @@ class TestDirInit:
         with open("myfile", "w") as f:
             f.write("hello")
         print(os.listdir(os.getcwd()))
-
-
-
-
-
-
-
-
-
-
 
